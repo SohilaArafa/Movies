@@ -12,23 +12,27 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    (async () => {
-      const moviesData = await axios(`http://api.themoviedb.org/3/discover/movie?api_key=382a8945f0041d16a2e3baf64ae2461d&page=${currentPage}`);
-      console.log('movie results:', movies && movies.data && movies.data.results);
-      if (moviesData && moviesData.data && moviesData.data.results) {
-        setMovies(moviesData.data.results);
-        setLoading(false);
-      }
-    })();
+        setIsLoading(true);
+        this.getData()
+        return () => {}
   }, [currentPage]);
 
-  renderItem = ({item}) => {
+  getData = async () => {
+      await fetch(`http://api.themoviedb.org/3/discover/movie?api_key=382a8945f0041d16a2e3baf64ae2461d&page=${currentPage}`)
+      .then((res)=> res.json())
+      .then((resJson)  => {
+        setMovies(movies.concat(resJson))
+        setIsLoading(false)
+      })
+    }
+
+  renderItem = ({movie}) => {
     return (
-      <View>
-        <Image source= {{uri : `https://image.tmdb.org/t/p/w500${item.poster_path}`}} />
-        <Text>{item.title}</Text>
-        <Text>{item.overview}</Text>
-        <Text>{item.release_date}</Text>
+      <View style={styles.itemRow }>
+        <Image source= {{uri : `https://image.tmdb.org/t/p/w500${movie.poster_path}`}} style={styles.image} />
+        <Text style={styles.textInput}>{movie.title}</Text>
+        <Text style={styles.textInput}>{movie.overview}</Text>
+        <Text style={styles.textInput}>{movie.release_date}</Text>
       </View>
     )
   }
@@ -36,7 +40,7 @@ export default function App() {
   renderFooter = () => {
     return (
       isloading ? 
-      <View>
+      <View style={styles.loader}>
         <ActivityIndicator size="large"/>
       </View> : null
     )
@@ -49,32 +53,46 @@ export default function App() {
 
 
   return (
+    <SafeAreaView> 
     <FlatList
     style= {styles.container}
-    data={data}
+    data={movies}
     renderItem={this.renderItem}
-    keyExtractor={(item,index) => index.toString()}
+    keyExtractor={(movie,index) => index.toString()}
     ListFooterComponent={this.renderFooter}
     onEndReached={this.handleLoadMore}
     onEndReachedThreshold={0}
     />
-  )}
+    </SafeAreaView>
+  )
+}
     const styles = StyleSheet.create({
       container: {
         marginTop : 20,
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor : '#f5fcff'
+      },
+      itemRow : {
+        borderBottomColor : '#ccc',
+        marginBottom : 10,
+        borderBottomWidth : 1
       },
       image: {
-        width: 200,
+        width: '100%',
         height: 200,
-        resizeMode: 'contain'    
+        resizeMode: 'cover'    
       },
       textInput: {
         fontSize: 16,
         fontWeight : "bold" , 
-        color:'black'
+        color:'black', 
+        padding : 5
+      } ,
+      loader : {
+        marginTop : 10,
+        alignItems : 'center'
       }
     });
-
+  
