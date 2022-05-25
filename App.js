@@ -1,56 +1,66 @@
 import { StatusBar } from 'expo-status-bar';
 import axios from 'axios';
-import { SafeAreaView, ScrollView, StyleSheet , Text, View, ActivityIndicator } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet , Text, View, ActivityIndicator, FlatList } from 'react-native';
 import { useState , useEffect } from 'react';
 import Movies from './Movies';
 import {Card } from 'react-native-elements'
 
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  const [isloading, setIsLoading] = useState(false);
   const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     (async () => {
-      const moviesData = await axios(`http://api.themoviedb.org/3/discover/movie?api_key=382a8945f0041d16a2e3baf64ae2461d&page=${page}`);
+      const moviesData = await axios(`http://api.themoviedb.org/3/discover/movie?api_key=382a8945f0041d16a2e3baf64ae2461d&page=${currentPage}`);
       console.log('movie results:', movies && movies.data && movies.data.results);
       if (moviesData && moviesData.data && moviesData.data.results) {
         setMovies(moviesData.data.results);
         setLoading(false);
       }
     })();
-  }, [page]);
+  }, [currentPage]);
+
+  renderItem = ({item}) => {
+    return (
+      <View>
+        <Image source= {{uri : `https://image.tmdb.org/t/p/w500${item.poster_path}`}} />
+        <Text>{item.title}</Text>
+        <Text>{item.overview}</Text>
+        <Text>{item.release_date}</Text>
+      </View>
+    )
+  }
+
+  renderFooter = () => {
+    return (
+      isloading ? 
+      <View>
+        <ActivityIndicator size="large"/>
+      </View> : null
+    )
+  }
+
+  handleLoadMore = () => {
+    setCurrentPage(currentPage+1)
+  }
+
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        { loading
-          ? <ActivityIndicator visible={loading} textContent={'Loading'} />
-          : 
-           movies && movies.length 
-              // ? movies.map((movieReq, idx) => <Movies key={idx} data={movieReq}/>)
-            ? movies.map((movie, number) => {
-              console.log('idx from app.js', number);
-                // return <Movies key={idx} data={movieReq}/>
-                    <ScrollView>
-                        <Card key={number}>
-                            <Card.Title> {movie.title}</Card.Title>
-                            <Card.Divider/>
-                            <Text style={styles.textInput}>{movie.overview} </Text>
-                            <Text style={styles.textInput}>{movie.release_date} </Text>
-                            <Card.Image style={styles.image} source={{uri : `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}/>
-                        </Card>
-                    </ScrollView>
-              }) 
-              : <Text> No Movies </Text> 
-        }
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+    <FlatList
+    style= {styles.container}
+    data={data}
+    renderItem={this.renderItem}
+    keyExtractor={(item,index) => index.toString()}
+    ListFooterComponent={this.renderFooter}
+    onEndReached={this.handleLoadMore}
+    onEndReachedThreshold={0}
+    />
+  )}
     const styles = StyleSheet.create({
       container: {
+        marginTop : 20,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
