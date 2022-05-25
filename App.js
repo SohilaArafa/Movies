@@ -44,6 +44,7 @@ export default function App() {
 
   handleLoadMore = () => {
     setCurrentPage(currentPage+1)
+    setIsLoading(true)
   }
 
 
