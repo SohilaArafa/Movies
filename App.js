@@ -2,8 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import axios from 'axios';
 import { SafeAreaView, ScrollView, StyleSheet , Text, View, ActivityIndicator, FlatList } from 'react-native';
 import { useState , useEffect } from 'react';
-import Movies from './Movies';
-import {Card } from 'react-native-elements'
+//import Movies from './Movies';
+//import {Card } from 'react-native-elements'
 
 
 export default function App() {
