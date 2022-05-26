@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loader: {
-    //color : "#E6E6E3" ,
     marginTop: 50,
     alignItems: "center",
   },
