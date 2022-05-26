@@ -11,8 +11,6 @@ import {
   FlatList,
 } from "react-native";
 import { useState, useEffect } from "react";
-//import Movies from './Movies';
-//import {Card } from 'react-native-elements'
 
 export default function App() {
   const [isloading, setIsLoading] = useState(false);
