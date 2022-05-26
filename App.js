@@ -54,7 +54,8 @@ export default function App() {
     return  (
       isloading ?
       <View style={styles.loader}>
-        <ActivityIndicator size="large" />
+        <Text style={styles.loading_text}>...Loading...</Text>
+        <ActivityIndicator  animating={true} size="large" />
       </View> : null
     ) 
   };
@@ -64,7 +65,8 @@ export default function App() {
     setIsLoading(true);
   };
 
-  return movies ? (
+  return  (
+    <SafeAreaView>
     <FlatList
       contentContainerStyle={{ alignItems: "center" }}
       data={movies}
@@ -74,7 +76,9 @@ export default function App() {
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0}
     />
-  ) : null;
+  </SafeAreaView>
+  ) 
+  
 }
 const styles = StyleSheet.create({
   container: {
@@ -108,6 +112,9 @@ const styles = StyleSheet.create({
     color: "black",
     padding: 5,
   },
+  loading_text : {
+      color: 'black'
+  },
   dateInput: {
     fontSize: 12,
     fontWeight: "bold",
@@ -116,7 +123,7 @@ const styles = StyleSheet.create({
   },
   loader: {
     //color : "#E6E6E3" ,
-    marginTop: 10,
+    marginTop: 50,
     alignItems: "center",
   },
 });
