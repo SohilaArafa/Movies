@@ -54,8 +54,8 @@ export default function App() {
     return  (
       isloading ?
       <View style={styles.loader}>
+        <ActivityIndicator  animating={true} size="large" style={{opacity:1}} color="lightgreen"/>
         <Text style={styles.loading_text}>...Loading...</Text>
-        <ActivityIndicator  animating={true} size="large" style={{opacity:1}}/>
       </View> : null
     ) 
   };
