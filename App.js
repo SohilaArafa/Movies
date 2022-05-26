@@ -43,9 +43,9 @@ export default function App() {
           }}
           style={styles.image}
         />
-        <Text style={styles.textInput}>{movie.title}</Text>
+        <Text style={styles.titleInput}>{movie.title}</Text>
         <Text style={styles.textInput}>{movie.overview}</Text>
-        <Text style={styles.textInput}>{movie.release_date}</Text>
+        <Text style={styles.dateInput}>{movie.release_date}</Text>
       </View>
     );
   };
@@ -93,8 +93,21 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: "cover",
   },
+  titleInput: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "black",
+    padding: 5,
+    textAlign : "center"
+  },
   textInput: {
     fontSize: 16,
+    fontWeight: "normal",
+    color: "black",
+    padding: 5,
+  },
+  dateInput: {
+    fontSize: 12,
     fontWeight: "bold",
     color: "black",
     padding: 5,
