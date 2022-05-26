@@ -51,11 +51,12 @@ export default function App() {
   };
 
   const renderFooter = () => {
-    return isloading ? (
+    return  (
+      isloading ?
       <View style={styles.loader}>
         <ActivityIndicator size="large" />
-      </View>
-    ) : null;
+      </View> : null
+    ) 
   };
 
   const handleLoadMore = () => {
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loader: {
-    color : "#E6E6E3" ,
+    //color : "#E6E6E3" ,
     marginTop: 10,
     alignItems: "center",
   },
