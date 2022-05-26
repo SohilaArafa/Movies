@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import axios from 'axios';
-import { SafeAreaView, ScrollView, StyleSheet , Text, View, ActivityIndicator, FlatList } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet ,Image, Text, View, ActivityIndicator, FlatList } from 'react-native';
 import { useState , useEffect } from 'react';
 //import Movies from './Movies';
 //import {Card } from 'react-native-elements'
@@ -13,20 +13,19 @@ export default function App() {
 
   useEffect(() => {
         setIsLoading(true);
-        this.getData()
+        getData()
         return () => {}
   }, [currentPage]);
 
-  getData = async () => {
-      await fetch(`http://api.themoviedb.org/3/discover/movie?api_key=382a8945f0041d16a2e3baf64ae2461d&page=${currentPage}`)
-      .then((res)=> res.json())
-      .then((resJson)  => {
-        setMovies(movies.concat(resJson))
+  const getData = async () => {
+      const moviesData = await axios(`http://api.themoviedb.org/3/discover/movie?api_key=382a8945f0041d16a2e3baf64ae2461d&page=${currentPage}`)
+      if (moviesData  && moviesData.data && moviesData.data.results){
+        setMovies(movies.concat(moviesData))
         setIsLoading(false)
-      })
+      }
     }
 
-  renderItem = ({movie}) => {
+  const renderItem = ({movie}) => {
     return (
       <View style={styles.itemRow }>
         <Image source= {{uri : `https://image.tmdb.org/t/p/w500${movie.poster_path}`}} style={styles.image} />
@@ -37,7 +36,7 @@ export default function App() {
     )
   }
 
-  renderFooter = () => {
+  const renderFooter = () => {
     return (
       isloading ? 
       <View style={styles.loader}>
@@ -46,24 +45,23 @@ export default function App() {
     )
   }
 
-  handleLoadMore = () => {
+  const handleLoadMore = () => {
     setCurrentPage(currentPage+1)
     setIsLoading(true)
   }
 
 
   return (
-    <SafeAreaView> 
+    movies?
     <FlatList
-    style= {styles.container}
+    contentContainerStyle={{alignItems:'center'}}
     data={movies}
-    renderItem={this.renderItem}
+    renderItem={renderItem}
     keyExtractor={(movie,index) => index.toString()}
-    ListFooterComponent={this.renderFooter}
-    onEndReached={this.handleLoadMore}
+    ListFooterComponent={renderFooter}
+    onEndReached={handleLoadMore}
     onEndReachedThreshold={0}
-    />
-    </SafeAreaView>
+    /> : null
   )
 }
     const styles = StyleSheet.create({
