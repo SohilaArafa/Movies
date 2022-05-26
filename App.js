@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   titleInput: {
+    backgroundColor : "#E6E6E3",
     fontSize: 26,
     fontWeight: "bold",
     color: "black",
@@ -113,6 +114,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loader: {
+    color : "#E6E6E3" ,
     marginTop: 10,
     alignItems: "center",
   },
