@@ -55,7 +55,7 @@ export default function App() {
       isloading ?
       <View style={styles.loader}>
         <Text style={styles.loading_text}>...Loading...</Text>
-        <ActivityIndicator  animating={true} size="large" />
+        <ActivityIndicator  animating={true} size="large" style={{opacity:1}}/>
       </View> : null
     ) 
   };
@@ -113,7 +113,10 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loading_text : {
-      color: 'black'
+      color: 'black',
+      fontStyle : 'italic' ,
+      fontSize : 20 ,
+      textAlign  : "center"
   },
   dateInput: {
     fontSize: 12,
